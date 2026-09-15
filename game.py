@@ -68,6 +68,7 @@ class Game:
                 self.obstacle_image,
                 self.font,
                 self.collect_sound,
+                self.eat_sound,
             ),
         )
         self.manager.register(
@@ -124,6 +125,7 @@ class Game:
     def _load_sounds(self) -> None:
         self.ui_sound = pygame.mixer.Sound("sounds/ui.wav")
         self.collect_sound = pygame.mixer.Sound("sounds/collect.wav")
+        self.eat_sound = pygame.mixer.Sound("sounds/eat.wav")
 
     def run(self):
         while self.running:

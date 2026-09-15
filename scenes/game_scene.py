@@ -50,6 +50,7 @@ class GameScene(AbstractScene):
         obstacle_image: pygame.Surface,
         font: pygame.Font,
         collect_sound: pygame.Sound,
+        eat_sound: pygame.Sound,
     ):
         self.config = config
 
@@ -68,6 +69,7 @@ class GameScene(AbstractScene):
 
         self.font = font
         self.collect_sound = collect_sound
+        self.eat_sound = eat_sound
 
         self.score = 0
         self.level_index = 0
@@ -159,9 +161,19 @@ class GameScene(AbstractScene):
         collected = pygame.sprite.spritecollide(
             self.player, self.memories, True, pygame.sprite.collide_mask
         )
+
+        stolen = pygame.sprite.groupcollide(
+            self.enemies, self.memories, False, True
+        )
+
         for _ in collected:
             self.score += 10
             self.collect_sound.play()
+
+        for _ in stolen:
+            self.eat_sound.play()
+
+        for _ in range(len(collected) + len(stolen)):
             new_mem = Memory(
                 self.memory_image,
                 self.config.window_width,
