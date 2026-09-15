@@ -16,5 +16,5 @@ class AbstractScene(ABC):
         pass
 
     # Хук, вызываемый при активации
-    def on_enter(self) -> None:
+    def on_enter(self, *args, **kwargs) -> None:
         pass

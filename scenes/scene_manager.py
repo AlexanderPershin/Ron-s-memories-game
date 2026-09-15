@@ -12,14 +12,15 @@ class SceneManager:
     def register(self, name: str, screen_obj: AbstractScene) -> None:
         self.scenes[name] = screen_obj
 
-    def switch(self, name: str) -> None:
+    def switch(self, name: str, *args, **kwargs) -> None:
         if name not in self.scenes:
             raise ValueError(f"Scene '{name}' not found")
 
         self.sound.play()
+
         self.current = self.scenes[name]
 
-        self.current.on_enter()
+        self.current.on_enter(*args, **kwargs)
 
     def handle_event(self, event: pygame.Event) -> None:
         if self.current:

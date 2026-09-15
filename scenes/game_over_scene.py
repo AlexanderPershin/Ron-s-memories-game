@@ -27,10 +27,15 @@ class GameOverScene(AbstractScene):
                 elif event.key == pygame.K_ESCAPE:
                     self.manager.switch("menu")
 
-    def on_enter(self):
+    def on_enter(
+        self, *args, final_score: int = 0, reached_level: int = 0, **kwargs
+    ) -> None:
         pygame.mixer.music.stop()
         pygame.mixer.music.load("sounds/defeat.wav")
         pygame.mixer.music.play()
+
+        self.final_score = final_score
+        self.reached_level = reached_level
 
     def draw(self, surf: pygame.Surface) -> None:
         surf.fill((40, 10, 10))

@@ -27,7 +27,7 @@ class VictoryScene(AbstractScene):
                 elif event.key == pygame.K_ESCAPE:
                     self.manager.switch("menu")
 
-    def on_enter(self):
+    def on_enter(self, *args, **kwargs):
         pygame.mixer.music.stop()
         pygame.mixer.music.load("sounds/victory.wav")
         pygame.mixer.music.play()

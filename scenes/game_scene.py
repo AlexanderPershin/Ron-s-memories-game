@@ -84,17 +84,18 @@ class GameScene(AbstractScene):
     def level_number(self):
         return self.level_index + 1
 
-    def on_enter(self):
+    def on_enter(self, *args, do_reset: bool = True, **kwargs):
         pygame.mixer.music.stop()
         pygame.mixer.music.load("sounds/game_theme.wav")
         pygame.mixer.music.play(-1)
 
-        self.score = 0
-        self.level_index = 0
-        self.spawn_timer = 0
-        self.level_flash = 1.5
+        if do_reset:
+            self.score = 0
+            self.level_index = 0
+            self.spawn_timer = 0
+            self.level_flash = 1.5
 
-        self._setup_level()
+            self._setup_level()
 
     def _setup_level(self):
         self.enemies.empty()
@@ -153,7 +154,7 @@ class GameScene(AbstractScene):
 
     def handle_event(self, event: pygame.Event):
         if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
-            self.manager.switch("menu")
+            self.manager.switch("menu", game_in_progress=True)
 
     def update(self, dt: float, *args, **kwargs):
         self.all_sprites.update(dt, *args, **kwargs)
@@ -224,9 +225,11 @@ class GameScene(AbstractScene):
             self.level_flash -= dt
 
     def _game_over(self):
-        self.manager.scenes["gameover"].final_score = self.score
-        self.manager.scenes["gameover"].reached_level = self.level_number
-        self.manager.switch("gameover")
+        self.manager.switch(
+            "gameover",
+            final_score=self.score,
+            reached_level=self.level_number,
+        )
 
     def draw(self, surf: pygame.Surface) -> None:
         surf.fill(self.level_config["bg_color"])

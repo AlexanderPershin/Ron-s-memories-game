@@ -18,11 +18,22 @@ class MainMenuScene(AbstractScene):
         self.font = font
         self.image = image
 
+        self.game_in_progress = False
+
         self.title = self.font.render("Ron's Memories", True, "#009900")
         self.title_rect = self.title.get_rect(
             center=(
                 self.config.window_width // 2,
                 self.config.window_height // 2 - 40,
+            )
+        )
+        self.continue_btn = self.font.render(
+            "1 - Continue", True, "#ffffff", "#006699"
+        )
+        self.continue_rect = self.continue_btn.get_rect(
+            center=(
+                self.config.window_width // 2,
+                self.config.window_height // 2,
             )
         )
 
@@ -48,20 +59,30 @@ class MainMenuScene(AbstractScene):
         match event.type:
             case pygame.KEYDOWN:
                 if event.key in (pygame.K_RETURN, pygame.K_SPACE):
-                    self.manager.switch("game")
+                    self.manager.switch("game", do_reset=True)
+                elif event.key == pygame.K_1:
+                    self.manager.switch("game", do_reset=False)
                 elif event.key == pygame.K_ESCAPE:
                     pygame.event.post(pygame.event.Event(pygame.QUIT))
             case pygame.MOUSEBUTTONDOWN:
-                if event.button == 1 and self.enter_rect.collidepoint(
+                if event.button == 1 and self.continue_rect.collidepoint(
                     event.pos
                 ):
-                    self.manager.switch("game")
+                    self.manager.switch("game", do_reset=False)
+                elif event.button == 1 and self.enter_rect.collidepoint(
+                    event.pos
+                ):
+                    self.manager.switch("game", do_reset=True)
                 elif event.button == 1 and self.quit_rect.collidepoint(
                     event.pos
                 ):
                     pygame.event.post(pygame.event.Event(pygame.QUIT))
 
-    def on_enter(self):
+    def on_enter(
+        self, *args, game_in_progress: bool = False, **kwargs
+    ) -> None:
+        self.game_in_progress = game_in_progress
+
         pygame.mixer.music.stop()
         pygame.mixer.music.load("sounds/menu_theme.mp3")
         pygame.mixer.music.play(-1)
@@ -74,6 +95,9 @@ class MainMenuScene(AbstractScene):
         )
 
         surf.blit(self.title, self.title_rect)
+
+        if self.game_in_progress:
+            surf.blit(self.continue_btn, self.continue_rect)
 
         surf.blit(self.enter, self.enter_rect)
 
