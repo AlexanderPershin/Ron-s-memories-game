@@ -9,8 +9,8 @@ class SceneManager:
         self.scenes: dict[str, AbstractScene] = {}
         self.sound = sound
 
-    def register(self, name: str, screen_obj: AbstractScene) -> None:
-        self.scenes[name] = screen_obj
+    def register(self, name: str, scene_obj: AbstractScene) -> None:
+        self.scenes[name] = scene_obj
 
     def switch(self, name: str, *args, **kwargs) -> None:
         if name not in self.scenes:
