@@ -11,10 +11,12 @@ class GameOverScene(AbstractScene):
         manager: SceneManager,
         config: Config,
         font: pygame.Font,
+        image: pygame.Surface,
     ):
         self.manager = manager
         self.config = config
         self.font = font
+        self.image = image
 
         self.final_score = 0
         self.reached_level = 1
@@ -39,7 +41,12 @@ class GameOverScene(AbstractScene):
         self.reached_level = reached_level
 
     def draw(self, surf: pygame.Surface) -> None:
-        surf.fill((40, 10, 10))
+        surf.fill("lightsalmon")
+
+        surf.blit(
+            self.image, self.image.get_rect(center=surf.get_rect().center)
+        )
+
         title = self.font.render("GAME OVER", True, "#fa5252")
         score = self.font.render(
             f"Final Score: {self.final_score}", True, "white"

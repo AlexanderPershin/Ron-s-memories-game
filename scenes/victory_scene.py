@@ -11,10 +11,12 @@ class VictoryScene(AbstractScene):
         manager: SceneManager,
         config: Config,
         font: pygame.Font,
+        image: pygame.Surface,
     ):
         self.manager = manager
         self.config = config
         self.font = font
+        self.image = image
 
         self.final_score = 0
         self.reached_level = 1
@@ -35,6 +37,11 @@ class VictoryScene(AbstractScene):
 
     def draw(self, surf: pygame.Surface) -> None:
         surf.fill("lightblue")
+
+        surf.blit(
+            self.image, self.image.get_rect(center=surf.get_rect().center)
+        )
+
         title = self.font.render(
             "You have won! Congratulations!", True, "#006699"
         )

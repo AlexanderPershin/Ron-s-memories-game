@@ -77,6 +77,7 @@ class Game:
                 self.manager,
                 self.config,
                 self.font,
+                self.defeat_image,
             ),
         )
         self.manager.register(
@@ -85,6 +86,7 @@ class Game:
                 self.manager,
                 self.config,
                 self.font,
+                self.victory_image,
             ),
         )
         self.manager.switch("menu")
@@ -120,6 +122,12 @@ class Game:
         )
         self.menu_image = pygame.image.load(
             "images/menu_image.svg"
+        ).convert_alpha()
+        self.victory_image = pygame.image.load(
+            "images/victory.svg"
+        ).convert_alpha()
+        self.defeat_image = pygame.image.load(
+            "images/defeat.svg"
         ).convert_alpha()
 
     def _load_sounds(self) -> None:

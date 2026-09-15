@@ -10,11 +10,31 @@ class Player(pygame.sprite.Sprite):
     ):
         super().__init__()
 
+        self.original_image = image.copy()
         self.image = image
 
         self.pos = pos
 
         self.rect = self.image.get_rect(center=pos)
+
+        self.invulnarable_image = pygame.Surface(
+            (120, 120), flags=pygame.SRCALPHA
+        )
+        shield_surface = pygame.Surface((120, 120), flags=pygame.SRCALPHA)
+        pygame.draw.circle(
+            shield_surface,
+            "#00669955",
+            (60, 60),
+            50,
+        )
+
+        self.invulnarable_image.blit(shield_surface, (0, 0))
+        self.invulnarable_image.blit(
+            self.original_image,
+            self.original_image.get_rect(
+                center=self.invulnarable_image.get_rect().center
+            ),
+        )
 
         self.mask = pygame.mask.from_surface(self.image)
 
@@ -55,5 +75,10 @@ class Player(pygame.sprite.Sprite):
         self.pos += move * self.speed * dt
 
         self._stay_in_world(screen_rect)
+
+        if self.is_invulnarable:
+            self.image = self.invulnarable_image
+        else:
+            self.image = self.original_image
 
         self.rect.center = self.pos
