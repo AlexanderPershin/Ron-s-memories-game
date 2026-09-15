@@ -54,6 +54,7 @@ class Game:
                 self.manager,
                 self.config,
                 self.font,
+                self.menu_image,
             ),
         )
         self.manager.register(
@@ -115,6 +116,9 @@ class Game:
             pygame.image.load("images/cloud.svg").convert_alpha(),
             (self.config.tile_size, self.config.tile_size),
         )
+        self.menu_image = pygame.image.load(
+            "images/menu_image.svg"
+        ).convert_alpha()
 
     def _load_sounds(self) -> None:
         pygame.mixer.music.load("sounds/theme.mp3")

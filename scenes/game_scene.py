@@ -225,7 +225,10 @@ class GameScene(AbstractScene):
         esc_text = self.font.render("ESC — Menu", True, "#aaaaaa")
         surf.blit(
             esc_text,
-            (self.config.window_width - 110, self.config.window_height - 30),
+            (
+                self.config.window_width - esc_text.get_rect().width - 10,
+                self.config.window_height - 30,
+            ),
         )
 
         if self.level_flash > 0:
