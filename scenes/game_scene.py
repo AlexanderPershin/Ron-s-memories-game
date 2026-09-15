@@ -11,39 +11,30 @@ from scenes.scene_manager import SceneManager
 LEVELS = [
     {
         "threshold": 99,
-        "bg_color": (14, 15, 25),
+        "bg_color": "#55ddffff",
         "enemy_speed": (79, 160),
         "enemies": 2,
-        "coins": 4,
+        "memories": 4,
         "obstacles": -1,
         "spawn_interval": 4.0,
     },
     {
-        "threshold": 249,
-        "bg_color": (24, 20, 15),
+        "threshold": 200,
+        "bg_color": "#00c4efff",
         "enemy_speed": (119, 220),
         "enemies": 3,
-        "coins": 5,
+        "memories": 5,
         "obstacles": 2,
         "spawn_interval": 3.0,
     },
     {
-        "threshold": 499,
-        "bg_color": (14, 25, 20),
+        "threshold": 300,
+        "bg_color": "#4d7a83ff",
         "enemy_speed": (159, 280),
         "enemies": 4,
-        "coins": 6,
+        "memories": 6,
         "obstacles": 4,
         "spawn_interval": 2.0,
-    },
-    {
-        "threshold": None,
-        "bg_color": (29, 10, 30),
-        "enemy_speed": (199, 340),
-        "enemies": 5,
-        "coins": 7,
-        "obstacles": 6,
-        "spawn_interval": 1.5,
     },
 ]
 
@@ -135,7 +126,7 @@ class GameScene(AbstractScene):
             self.enemies.add(enemy)
             self.all_sprites.add(enemy, layer=2)
 
-        for _ in range(self.level_config["coins"]):
+        for _ in range(self.level_config["memories"]):
             memory = Memory(
                 self.memory_image,
                 self.config.window_width,
@@ -148,6 +139,9 @@ class GameScene(AbstractScene):
         self.level_index += 1
         self.level_flash = 1.5
         self.spawn_timer = 0
+        if self.level_index == len(LEVELS):
+            self.manager.switch("victory")
+            return
         self._setup_level()
 
     def handle_event(self, event: pygame.Event):
@@ -170,14 +164,20 @@ class GameScene(AbstractScene):
             self.memories.add(new_mem)
             self.all_sprites.add(new_mem)
 
-        if pygame.sprite.spritecollideany(
-            self.player, self.enemies, pygame.sprite.collide_mask
+        if (
+            pygame.sprite.spritecollideany(
+                self.player, self.enemies, pygame.sprite.collide_mask
+            )
+            and not self.player.is_invulnarable
         ):
             self._game_over()
             return
 
-        if pygame.sprite.spritecollideany(
-            self.player, self.obstacles, pygame.sprite.collide_mask
+        if (
+            pygame.sprite.spritecollideany(
+                self.player, self.obstacles, pygame.sprite.collide_mask
+            )
+            and not self.player.is_invulnarable
         ):
             self._game_over()
             return
@@ -199,8 +199,7 @@ class GameScene(AbstractScene):
 
         threshold = self.level_config["threshold"]
 
-        # If threshold is None — infinite mode
-        if threshold is not None and self.score >= threshold:
+        if self.score >= threshold:
             self._advance_level()
 
         if self.level_flash > 0:

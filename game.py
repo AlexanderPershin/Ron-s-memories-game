@@ -1,7 +1,13 @@
 import pygame
 
 from config import Config
-from scenes import GameOverScene, GameScene, MainMenuScene, SceneManager
+from scenes import (
+    GameOverScene,
+    GameScene,
+    MainMenuScene,
+    SceneManager,
+    VictoryScene,
+)
 
 
 class Game:
@@ -65,6 +71,14 @@ class Game:
         self.manager.register(
             "gameover",
             GameOverScene(
+                self.manager,
+                self.config,
+                self.font,
+            ),
+        )
+        self.manager.register(
+            "victory",
+            VictoryScene(
                 self.manager,
                 self.config,
                 self.font,

@@ -20,14 +20,22 @@ class Player(pygame.sprite.Sprite):
 
         self.speed = speed
 
+        self.invulnarability_timer = 2  # 2 seconds can't be damaged
+
         self.max_hp = 100
         self.hp = 100
+
+    @property
+    def is_invulnarable(self) -> bool:
+        return self.invulnarability_timer > 0
 
     def _stay_in_world(self, screen_rect: pygame.Rect) -> None:
         self.pos.x = max(screen_rect.left, min(self.pos.x, screen_rect.right))
         self.pos.y = max(screen_rect.top, min(self.pos.y, screen_rect.bottom))
 
     def update(self, dt: float, *args, screen_rect: pygame.Rect, **kwargs):
+        self.invulnarability_timer -= dt
+
         keys = pygame.key.get_pressed()
 
         move = pygame.Vector2()
