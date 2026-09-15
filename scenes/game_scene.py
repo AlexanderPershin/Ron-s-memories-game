@@ -87,6 +87,7 @@ class GameScene(AbstractScene):
     def on_enter(self, *args, do_reset: bool = True, **kwargs):
         pygame.mixer.music.stop()
         pygame.mixer.music.load("sounds/game_theme.wav")
+        pygame.mixer.music.set_volume(1)
         pygame.mixer.music.play(-1)
 
         if do_reset:

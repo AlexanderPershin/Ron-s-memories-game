@@ -85,6 +85,7 @@ class MainMenuScene(AbstractScene):
 
         pygame.mixer.music.stop()
         pygame.mixer.music.load("sounds/menu_theme.mp3")
+        pygame.mixer.music.set_volume(0.5)
         pygame.mixer.music.play(-1)
 
     def draw(self, surf: pygame.Surface) -> None:

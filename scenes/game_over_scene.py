@@ -32,6 +32,7 @@ class GameOverScene(AbstractScene):
     ) -> None:
         pygame.mixer.music.stop()
         pygame.mixer.music.load("sounds/defeat.wav")
+        pygame.mixer.music.set_volume(1)
         pygame.mixer.music.play()
 
         self.final_score = final_score

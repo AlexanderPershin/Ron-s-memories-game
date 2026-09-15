@@ -30,6 +30,7 @@ class VictoryScene(AbstractScene):
     def on_enter(self, *args, **kwargs):
         pygame.mixer.music.stop()
         pygame.mixer.music.load("sounds/victory.wav")
+        pygame.mixer.music.set_volume(1)
         pygame.mixer.music.play()
 
     def draw(self, surf: pygame.Surface) -> None:
