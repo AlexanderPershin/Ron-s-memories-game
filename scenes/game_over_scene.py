@@ -27,6 +27,11 @@ class GameOverScene(AbstractScene):
                 elif event.key == pygame.K_ESCAPE:
                     self.manager.switch("menu")
 
+    def on_enter(self):
+        pygame.mixer.music.stop()
+        pygame.mixer.music.load("sounds/defeat.wav")
+        pygame.mixer.music.play()
+
     def draw(self, surf: pygame.Surface) -> None:
         surf.fill((40, 10, 10))
         title = self.font.render("GAME OVER", True, "#fa5252")

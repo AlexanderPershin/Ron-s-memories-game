@@ -49,6 +49,7 @@ class GameScene(AbstractScene):
         enemy_image: pygame.Surface,
         obstacle_image: pygame.Surface,
         font: pygame.Font,
+        collect_sound: pygame.Sound,
     ):
         self.config = config
 
@@ -64,9 +65,9 @@ class GameScene(AbstractScene):
         self.memories = pygame.sprite.Group()
         self.obstacles = pygame.sprite.Group()
         self.all_sprites = pygame.sprite.LayeredUpdates()
-        # TODO: Add UI here
 
         self.font = font
+        self.collect_sound = collect_sound
 
         self.score = 0
         self.level_index = 0
@@ -82,6 +83,10 @@ class GameScene(AbstractScene):
         return self.level_index + 1
 
     def on_enter(self):
+        pygame.mixer.music.stop()
+        pygame.mixer.music.load("sounds/game_theme.wav")
+        pygame.mixer.music.play(-1)
+
         self.score = 0
         self.level_index = 0
         self.spawn_timer = 0
@@ -156,6 +161,7 @@ class GameScene(AbstractScene):
         )
         for _ in collected:
             self.score += 10
+            self.collect_sound.play()
             new_mem = Memory(
                 self.memory_image,
                 self.config.window_width,

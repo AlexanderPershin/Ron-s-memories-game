@@ -4,9 +4,10 @@ from scenes.scene import AbstractScene
 
 
 class SceneManager:
-    def __init__(self):
+    def __init__(self, sound: pygame.mixer.Sound):
         self.current: AbstractScene = None
         self.scenes: dict[str, AbstractScene] = {}
+        self.sound = sound
 
     def register(self, name: str, screen_obj: AbstractScene) -> None:
         self.scenes[name] = screen_obj
@@ -15,6 +16,7 @@ class SceneManager:
         if name not in self.scenes:
             raise ValueError(f"Scene '{name}' not found")
 
+        self.sound.play()
         self.current = self.scenes[name]
 
         self.current.on_enter()

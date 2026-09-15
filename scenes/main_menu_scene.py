@@ -61,6 +61,11 @@ class MainMenuScene(AbstractScene):
                 ):
                     pygame.event.post(pygame.event.Event(pygame.QUIT))
 
+    def on_enter(self):
+        pygame.mixer.music.stop()
+        pygame.mixer.music.load("sounds/menu_theme.mp3")
+        pygame.mixer.music.play(-1)
+
     def draw(self, surf: pygame.Surface) -> None:
         surf.fill("lightskyblue")
 

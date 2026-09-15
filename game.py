@@ -47,7 +47,7 @@ class Game:
         self._load_images()
         self._load_sounds()
 
-        self.manager = SceneManager()
+        self.manager = SceneManager(self.ui_sound)
         self.manager.register(
             "menu",
             MainMenuScene(
@@ -67,6 +67,7 @@ class Game:
                 self.enemy_image,
                 self.obstacle_image,
                 self.font,
+                self.collect_sound,
             ),
         )
         self.manager.register(
@@ -121,8 +122,8 @@ class Game:
         ).convert_alpha()
 
     def _load_sounds(self) -> None:
-        pygame.mixer.music.load("sounds/theme.mp3")
-        pygame.mixer.music.play(-1)
+        self.ui_sound = pygame.mixer.Sound("sounds/ui.wav")
+        self.collect_sound = pygame.mixer.Sound("sounds/collect.wav")
 
     def run(self):
         while self.running:
