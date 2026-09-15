@@ -1,0 +1,32 @@
+import pygame
+
+from scenes.scene import AbstractScene
+
+
+class SceneManager:
+    def __init__(self):
+        self.current: AbstractScene = None
+        self.scenes: dict[str, AbstractScene] = {}
+
+    def register(self, name: str, screen_obj: AbstractScene) -> None:
+        self.scenes[name] = screen_obj
+
+    def switch(self, name: str) -> None:
+        if name not in self.scenes:
+            raise ValueError(f"Scene '{name}' not found")
+
+        self.current = self.scenes[name]
+
+        self.current.on_enter()
+
+    def handle_event(self, event: pygame.Event) -> None:
+        if self.current:
+            self.current.handle_event(event)
+
+    def update(self, *args, **kwargs) -> None:
+        if self.current:
+            self.current.update(*args, **kwargs)
+
+    def draw(self, surf: pygame.Surface) -> None:
+        if self.current:
+            self.current.draw(surf)

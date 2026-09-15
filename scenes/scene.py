@@ -1,0 +1,20 @@
+from abc import ABC, abstractmethod
+
+import pygame
+
+
+class AbstractScene(ABC):
+    @abstractmethod
+    def handle_event(self, event: pygame.Event) -> None:
+        pass
+
+    def update(self, dt: float, *args, **kwargs) -> None:
+        pass
+
+    @abstractmethod
+    def draw(self, surface: pygame.Surface) -> None:
+        pass
+
+    # Хук, вызываемый при активации
+    def on_enter(self) -> None:
+        pass

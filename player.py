@@ -12,7 +12,11 @@ class Player(pygame.sprite.Sprite):
 
         self.image = image
 
+        self.pos = pos
+
         self.rect = self.image.get_rect(center=pos)
+
+        self.mask = pygame.mask.from_surface(self.image)
 
         self.speed = speed
 
@@ -20,26 +24,28 @@ class Player(pygame.sprite.Sprite):
         self.hp = 100
 
     def _stay_in_world(self, screen_rect: pygame.Rect) -> None:
-        self.rect.centerx = max(
-            screen_rect.left, min(self.rect.centerx, screen_rect.right)
-        )
-        self.rect.centery = max(
-            screen_rect.top, min(self.rect.centery, screen_rect.bottom)
-        )
+        self.pos.x = max(screen_rect.left, min(self.pos.x, screen_rect.right))
+        self.pos.y = max(screen_rect.top, min(self.pos.y, screen_rect.bottom))
 
     def update(self, dt: float, *args, screen_rect: pygame.Rect, **kwargs):
         keys = pygame.key.get_pressed()
-        dx = dy = 0
-        if keys[pygame.K_LEFT] or keys[pygame.K_a]:
-            dx -= 1
-        if keys[pygame.K_RIGHT] or keys[pygame.K_d]:
-            dx += 1
-        if keys[pygame.K_UP] or keys[pygame.K_w]:
-            dy -= 1
-        if keys[pygame.K_DOWN] or keys[pygame.K_s]:
-            dy += 1
 
-        self.rect.x += dx * self.speed * dt
-        self.rect.y += dy * self.speed * dt
+        move = pygame.Vector2()
+
+        if keys[pygame.K_w] or keys[pygame.K_UP]:
+            move.y -= 1
+        if keys[pygame.K_s] or keys[pygame.K_DOWN]:
+            move.y += 1
+        if keys[pygame.K_a] or keys[pygame.K_LEFT]:
+            move.x -= 1
+        if keys[pygame.K_d] or keys[pygame.K_RIGHT]:
+            move.x += 1
+
+        if move.length_squared() > 0:
+            move.normalize_ip()
+
+        self.pos += move * self.speed * dt
 
         self._stay_in_world(screen_rect)
+
+        self.rect.center = self.pos
