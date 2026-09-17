@@ -42,9 +42,6 @@ class Player(pygame.sprite.Sprite):
 
         self.invulnarability_timer = 2  # 2 seconds can't be damaged
 
-        self.max_hp = 100
-        self.hp = 100
-
     @property
     def is_invulnarable(self) -> bool:
         return self.invulnarability_timer > 0
