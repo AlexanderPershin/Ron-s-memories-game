@@ -60,13 +60,15 @@ class MainMenuScene(AbstractScene):
             case pygame.KEYDOWN:
                 if event.key in (pygame.K_RETURN, pygame.K_SPACE):
                     self.manager.switch("game", do_reset=True)
-                elif event.key == pygame.K_1:
+                elif event.key == pygame.K_1 and self.game_in_progress:
                     self.manager.switch("game", do_reset=False)
                 elif event.key == pygame.K_ESCAPE:
                     pygame.event.post(pygame.event.Event(pygame.QUIT))
             case pygame.MOUSEBUTTONDOWN:
-                if event.button == 1 and self.continue_rect.collidepoint(
-                    event.pos
+                if (
+                    event.button == 1
+                    and self.continue_rect.collidepoint(event.pos)
+                    and self.game_in_progress
                 ):
                     self.manager.switch("game", do_reset=False)
                 elif event.button == 1 and self.enter_rect.collidepoint(
