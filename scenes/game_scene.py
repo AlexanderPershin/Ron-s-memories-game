@@ -10,7 +10,7 @@ from scenes.scene_manager import SceneManager
 
 LEVELS = [
     {
-        "threshold": 99,
+        "threshold": 100,
         "bg_color": "#55ddffff",
         "enemy_speed": (79, 160),
         "enemies": 2,
