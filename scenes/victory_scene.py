@@ -29,11 +29,16 @@ class VictoryScene(AbstractScene):
                 elif event.key == pygame.K_ESCAPE:
                     self.manager.switch("menu")
 
-    def on_enter(self, *args, **kwargs):
+    def on_enter(
+        self, *args, final_score: int = 0, reached_level: int = 0, **kwargs
+    ) -> None:
         pygame.mixer.music.stop()
         pygame.mixer.music.load("sounds/victory.wav")
         pygame.mixer.music.set_volume(1)
         pygame.mixer.music.play()
+
+        self.final_score = final_score
+        self.reached_level = reached_level
 
     def draw(self, surf: pygame.Surface) -> None:
         surf.fill("lightblue")
